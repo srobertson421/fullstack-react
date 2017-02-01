@@ -16,7 +16,10 @@ class AdminContainer extends Component {
   render() {
     let adminView;
     if(this.state.loggedIn) {
-      adminView = <h1>Admin Page! {this.state.user.email}</h1>
+      adminView = <div>
+        <h1>Admin Page! {this.state.user.email}</h1>
+        <button onClick={(event) => {this.logout(event)}}>Logout</button>
+      </div>
     } else {
       adminView = <AdminLoginForm login={(event) => {this.login(event)}}></AdminLoginForm>
     }
@@ -47,6 +50,11 @@ class AdminContainer extends Component {
       AuthService.saveToken(res.token);
       this.setState({loggedIn: true, user: res.user});
     });
+  }
+
+  logout(event) {
+    AuthService.removeToken();
+    this.setState({loggedIn: AuthService.isLoggedIn(), user: AuthService.currentUser()});
   }
 }
 
