@@ -1,30 +1,16 @@
 import React, { Component } from 'react';
+import { Router, Route, browserHistory } from 'react-router';
 
-import PostsList from './components/PostsList';
+import HomeContainer from './containers/HomeContainer';
+import PostContainer from './containers/PostContainer';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      posts: []
-    }
-  }
-  
-  componentDidMount() {
-    fetch('/api/posts').then((res) => {
-      return res.json();
-    }).then((res) => {
-      this.setState({posts: res});
-    });
-  }
-
   render() {
     return (
-      <div>
-        <h1>Posts</h1>
-        <PostsList posts={this.state.posts}></PostsList>
-      </div>
+      <Router history={browserHistory}>
+        <Route path="/" component={HomeContainer}></Route>
+        <Route path="/post/:id" component={PostContainer}></Route>
+      </Router>
     );
   }
 }

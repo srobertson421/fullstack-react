@@ -21,7 +21,7 @@ router.route('/')
 
 router.route('/:id')
 .get(function(req, res) {
-  Post.find({_id: req.params.id}, function(err, post) {
+  Post.findOne({_id: req.params.id}, function(err, post) {
     if(err) return res.status(500).send({message: 'Database Error'});
 
     res.send(post)
