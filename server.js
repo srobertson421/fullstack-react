@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var app = express();
+var expressWs = require('express-ws')(app);
 
 var User = require('./models/user');
 var secret = process.env.JWT_SECRET || 'supersecret';
@@ -33,6 +34,17 @@ app.post('/auth/login', function(req, res) {
     });
   });
 });
+
+// WebSocket routes
+app.ws('/chat', function(ws, req) {
+  ws.on('message', function(msg) {
+    wsClients.clients.forEach(function(client) {
+      client.send(msg);
+    });
+  });
+});
+
+var wsClients = expressWs.getWss('/chat');
 
 app.listen(3001, function() {
   console.log('API Server running on port 3001');
