@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import AuthService from '../services/auth-service';
 import AdminLoginForm from '../components/AdminLoginForm';
+import AdminDashboard from '../components/AdminDashboard';
 
 class AdminContainer extends Component {
   constructor(props) {
@@ -17,8 +18,8 @@ class AdminContainer extends Component {
     let adminView;
     if(this.state.loggedIn) {
       adminView = <div>
-        <h1>Admin Page! {this.state.user.email}</h1>
         <button onClick={(event) => {this.logout(event)}}>Logout</button>
+        <AdminDashboard></AdminDashboard>
       </div>
     } else {
       adminView = <AdminLoginForm login={(event) => {this.login(event)}}></AdminLoginForm>
