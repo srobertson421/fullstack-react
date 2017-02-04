@@ -4,7 +4,6 @@ import { Router, Route, browserHistory } from 'react-router';
 import HomeContainer from './containers/HomeContainer';
 import PostContainer from './containers/PostContainer';
 import AdminContainer from './containers/AdminContainer';
-import ChatContainer from './containers/ChatContainer';
 
 class App extends Component {
   render() {

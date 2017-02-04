@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ChatContainer extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
 
@@ -30,7 +30,6 @@ class ChatContainer extends Component {
 
     return (
       <div>
-        <h1>Chat Page</h1>
         <form onSubmit={(event) => {this.sendMessage(event)}}>
           <input type="text" name="message" placeholder="Enter message" />
         </form>
@@ -47,4 +46,4 @@ class ChatContainer extends Component {
   }
 }
 
-export default ChatContainer;
+export default Chat;
