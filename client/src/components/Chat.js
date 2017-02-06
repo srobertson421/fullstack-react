@@ -5,12 +5,12 @@ class Chat extends Component {
     super(props);
 
     this.state = {
-      messages: []
+      messages: this.props.messages
     }
   }
 
   componentDidMount() {
-    this.socket = new WebSocket('ws://localhost:3001/chat');
+    this.socket = new WebSocket(`ws://localhost:3001/api/lobbies/${this.props.lobbyId}/chat/${this.props.user._id}`);
 
     this.socket.onopen = (event) => {
       //this.socket.send('Connected!!');
@@ -18,15 +18,15 @@ class Chat extends Component {
 
     this.socket.onmessage = (event) => {
       let tempMessages = this.state.messages;
-      tempMessages.push(event.data);
+      tempMessages.push(JSON.parse(event.data));
       this.setState({messages: tempMessages});
     }
   }
 
   render() {
-    let messages = this.state.messages.map((message, index) => {
-      return <div key={index}>{message}</div>
-    });
+    let messages = this.state.messages.map((messageObj, index) => {
+      return <div key={messageObj._id}>{messageObj.message}</div>
+    }).reverse();
 
     return (
       <div>
@@ -40,7 +40,7 @@ class Chat extends Component {
 
   sendMessage(event) {
     event.preventDefault();
-    let message = event.target.message.value;
+    let message = `${this.props.user.email}: ${event.target.message.value}`;
     this.socket.send(message);
     event.target.message.value = '';
   }
