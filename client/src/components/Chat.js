@@ -10,17 +10,19 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.socket = new WebSocket(`ws://localhost:3001/api/lobbies/${this.props.lobbyId}/chat/${this.props.user._id}`);
-
+    this.socket = new WebSocket(`ws://${location.hostname}:3001/api/lobbies/${this.props.lobbyId}/chat/${this.props.user._id}`);
     this.socket.onopen = (event) => {
-      //this.socket.send('Connected!!');
+      this.socket.onmessage = (event) => {
+        let tempMessages = this.state.messages;
+        tempMessages.push(JSON.parse(event.data));
+        this.setState({messages: tempMessages});
+      }
     }
+  }
 
-    this.socket.onmessage = (event) => {
-      let tempMessages = this.state.messages;
-      tempMessages.push(JSON.parse(event.data));
-      this.setState({messages: tempMessages});
-    }
+  componentWillUnmount() {
+    this.socket.close();
+    this.socket = null;
   }
 
   render() {

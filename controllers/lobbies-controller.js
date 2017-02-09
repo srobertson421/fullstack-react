@@ -23,6 +23,7 @@ router.route('/')
 
 router.route('/:id')
 .get(function(req, res) {
+  console.log(req.headers);
   Lobby.findOne({_id: req.params.id}, function(err, lobby) {
     if(err) return res.status(500).send({message: 'Database Error'});
 
@@ -50,12 +51,14 @@ router.ws('/:lobbyId/chat/:clientId', function(ws, req) {
     socketRooms[req.params.lobbyId].clients = {};
     socketRooms[req.params.lobbyId].clients[req.params.clientId] = ws;
   } else {
-    if(!socketRooms[req.params.lobbyId].clients[req.params.clientId]) {
-      socketRooms[req.params.lobbyId].clients[req.params.clientId] = ws;
-    }
+    socketRooms[req.params.lobbyId].clients[req.params.clientId] = ws;
   }
 
-  ws.on('message', function(msg) {
+  socketRooms[req.params.lobbyId].clients[req.params.clientId].on('close', function(event) {
+    delete socketRooms[req.params.lobbyId].clients[req.params.clientId];
+  });
+
+  socketRooms[req.params.lobbyId].clients[req.params.clientId].on('message', function(msg) {
     Lobby.findByIdAndUpdate(
       req.params.lobbyId,
       {$push: {"chatMessages": {user: req.params.clientId, message: msg}}},

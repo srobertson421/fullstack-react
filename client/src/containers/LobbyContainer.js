@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import AuthService from '../services/auth-service';
 import Chat from '../components/Chat';
@@ -19,10 +20,11 @@ class LobbyContainer extends Component {
 
   componentDidMount() {
     let lobbyId = this.props.params.id;
-    fetch(`/api/lobbies/${lobbyId}`).then((res) => {
-      return res.json();
-    }).then((res) => {
-      this.setState({lobby: res});
+
+    axios.get(`/api/lobbies/${lobbyId}`).then((res) => {
+      this.setState({lobby: res.data});
+    }).catch((error) => {
+      console.log(error);
     });
   }
 

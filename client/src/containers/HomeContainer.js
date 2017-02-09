@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import LobbyList from '../components/LobbyList';
 import AddLobbyForm from '../components/AddLobbyForm';
@@ -14,10 +15,10 @@ class HomeContainer extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/lobbies').then((res) => {
-      return res.json();
-    }).then((res) => {
-      this.setState({lobbies: res});
+    axios.get('/api/lobbies').then((res) => {
+      this.setState({lobbies: res.data});
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
@@ -40,19 +41,12 @@ class HomeContainer extends Component {
 
     event.target.title.value = '';
 
-    fetch('/api/lobbies', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify(lobby)
-    }).then((res) => {
-      return res.json();
-    }).then((res) => {
+    axios.post('/api/lobbies', lobby).then((res) => {
       let tempLobbies = this.state.lobbies;
-      tempLobbies.push(res);
+      tempLobbies.push(res.data);
       this.setState({lobbies: tempLobbies});
+    }).catch((error) => {
+      console.log(error);
     });
   }
 }

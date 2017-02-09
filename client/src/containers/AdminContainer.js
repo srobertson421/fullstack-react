@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import AuthService from '../services/auth-service';
 import AdminLoginForm from '../components/AdminLoginForm';
@@ -38,18 +39,12 @@ class AdminContainer extends Component {
       password: event.target.password.value
     }
 
-    fetch('/auth/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userInfo)
-    }).then((res) => {
-      return res.json();
-    }).then((res) => {
+    axios.post('/auth/login', userInfo)
+    .then((res) => {
       AuthService.saveToken(res.token);
-      this.setState({loggedIn: true, user: res.user});
+      this.setState({loggedIn: true, user: res.data.user});
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
