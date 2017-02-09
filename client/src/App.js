@@ -75,18 +75,11 @@ class App extends Component {
       password: event.target.password.value
     }
 
-    fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userInfo)
-    }).then((res) => {
-      return res.json();
-    }).then((res) => {
-      AuthService.saveToken(res.token);
-      this.setState({loggedIn: true, user: res.user});
+    axios.post('/api/auth/login', userInfo).then((res) => {
+      AuthService.saveToken(res.data.token);
+      this.setState({loggedIn: true, user: res.data.user});
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
@@ -97,18 +90,11 @@ class App extends Component {
       password: event.target.password.value
     }
 
-    fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userInfo)
-    }).then((res) => {
-      return res.json();
-    }).then((res) => {
-      AuthService.saveToken(res.token);
-      this.setState({loggedIn: true, user: res.user});
+    axios.post('/api/auth/signup', userInfo).then((res) => {
+      AuthService.saveToken(res.data.token);
+      this.setState({loggedIn: true, user: res.data.user});
+    }).catch((error) => {
+      console.log(error);
     });
   }
 
