@@ -20,7 +20,6 @@
     "express-ws": "^2.0.0",
     "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.8.1",
-    "phaser-ce": "^2.7.3",
     "redis": "^2.6.5"
   },
   "devDependencies": {

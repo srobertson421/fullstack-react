@@ -2,6 +2,20 @@ var express = require('express');
 var router = express.Router();
 var Lobby = require('../models/lobby');
 var User = require('../models/user');
+var jwt = require('jsonwebtoken');
+
+var secret = process.env.JWT_SECRET || 'supersecret';
+
+// router.use(function(req, res, next) {
+//   //console.log(req.headers.authorization);
+//   var token = req.headers.authorization;
+//   //var token = req.headers.authorization.substring(6, req.headers.authorization.length);
+//   jwt.verify(token, secret, {ignoreExpiration: true}, function(err, decoded) {
+//     console.log(decoded);
+//     console.log(err);
+//     next();
+//   });
+// });
 
 var socketRooms = {};
 
@@ -23,7 +37,6 @@ router.route('/')
 
 router.route('/:id')
 .get(function(req, res) {
-  console.log(req.headers);
   Lobby.findOne({_id: req.params.id}, function(err, lobby) {
     if(err) return res.status(500).send({message: 'Database Error'});
 
@@ -46,6 +59,8 @@ router.route('/:id')
 });
 
 router.ws('/:lobbyId/chat/:clientId', function(ws, req) {
+  console.log('Connected via route');
+
   if(!socketRooms[req.params.lobbyId]) {
     socketRooms[req.params.lobbyId] = {};
     socketRooms[req.params.lobbyId].clients = {};

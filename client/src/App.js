@@ -22,8 +22,8 @@ class App extends Component {
 
   componentWillMount() {
     this.authInterceptor = axios.interceptors.request.use((config) => {
-      console.log(config);
-      return config
+      config.headers.Authorization = 'Bearer ' + AuthService.getToken();
+      return config;
     }, (error) => {
       return Promise.reject(error);
     });

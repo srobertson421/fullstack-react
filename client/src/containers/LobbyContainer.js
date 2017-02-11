@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import AuthService from '../services/auth-service';
 import Chat from '../components/Chat';
+import GameView from '../components/GameView';
 
 class LobbyContainer extends Component {
   constructor(props) {
@@ -34,10 +35,13 @@ class LobbyContainer extends Component {
     });
 
     let chat;
+    let game;
     if(!this.state.lobby._id) {
       chat = <h4>Loading chat...</h4>
+      game = <h4>Loading game...</h4>
     } else {
       chat = <Chat lobbyId={this.state.lobby._id} user={AuthService.currentUser()} messages={this.state.lobby.chatMessages}></Chat>
+      game = <GameView></GameView>
     }
 
     return (
@@ -45,6 +49,7 @@ class LobbyContainer extends Component {
         <h1>{this.state.lobby.title}</h1>
         {chat}
         {currentPlayers}
+        {game}
       </div>
     );
   }
