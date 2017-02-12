@@ -20,6 +20,12 @@ class GameView extends Component {
       <div id="game"></div>
     );
   }
+
+  componentWillUnmount() {
+    this.game.destroy();
+    document.getElementById('game').innerHTML = '';
+    console.log('Game destroyed and element cleared');
+  }
 }
 
 export default GameView;

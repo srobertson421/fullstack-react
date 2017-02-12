@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import BootState from './states/BootState';
 import LoadState from './states/LoadState';
 import MenuState from './states/MenuState';
+import GameState from './states/GameState';
 
 class Game extends Phaser.Game {
   constructor(elemId) {
@@ -16,6 +17,7 @@ class Game extends Phaser.Game {
     this.state.add('bootState', BootState);
     this.state.add('loadState', LoadState);
     this.state.add('menuState', MenuState);
+    this.state.add('gameState', GameState);
 
     this.state.start('bootState');
   }
